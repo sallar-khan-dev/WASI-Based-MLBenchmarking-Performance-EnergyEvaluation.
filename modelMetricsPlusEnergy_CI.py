@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
-WASM/WASI Runtime executions across various runtimes.
+Design goals
+- One common methodology across runtimes.
+- Same workload arguments for every runtime.
+- Same outer CI stopping logic.
+- Same wattmeter handling.
+- Metadata logging of the exact executed command and settings.
 
 Notes
 - Runtime-specific invocation/mount syntax still differs because CLIs differ.
--One common methodology across runtimes
-- Same workload arguments for every runtime.
 - The application-level workload is kept constant.
 - For WAMR modes, the dataset is exposed as /data/<file> because that is the
   most commonly working path with iwasm map-dir usage.
- - Same wattmeter handling.
 - For most other runtimes, the dataset is exposed under /work/<relative-path>.
 - For native, the host path is passed directly.
 """
@@ -279,12 +281,13 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
         return [wazero, "run", "--mount", f"{root}:/work", str(wasm), "--"] + wasm_args
 
     if runtime == "wasmi":
-        # Keep a /work-style mapping to make the guest-visible path consistent with most runtimes.
+        # wasmi CLI typically works with a preopened current working directory, not host::guest remapping.
+        # We therefore run with cwd=root, preopen '.', and pass the dataset as a project-relative path.
         wasmi = resolve_runtime_binary(
             [home / ".cargo/bin/wasmi_cli", home / ".cargo/bin/wasmi", "wasmi_cli", "wasmi"],
             "wasmi",
         )
-        return [wasmi, "--dir", f"{root}::/work", str(wasm), "--"] + wasm_args
+        return [wasmi, "--dir", ".", str(wasm), "--"] + wasm_args
 
     if runtime in ("wamr_interp", "wamr_fast_interp", "wamr_iwasm", "wamr_aot"):
         iwasm = resolve_runtime_binary(
@@ -435,6 +438,8 @@ def main():
         dataset_guest = str(host_dataset)
     elif args.runtime in ("wamr_interp", "wamr_fast_interp", "wamr_iwasm", "wamr_aot"):
         dataset_guest = guest_data
+    elif args.runtime == "wasmi":
+        dataset_guest = rel_from_root.as_posix()
     else:
         dataset_guest = guest_work
 
