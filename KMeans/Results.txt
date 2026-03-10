@@ -1,0 +1,26 @@
+KMEAN CLUSTERING! 
+
+1. wasmtime_jit:
+100K | Time: 3.8905 s | Energy: 14.1781 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+150K | Time: 5.8438 s | Energy: 21.2974 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+200K | Time: 7.7799 s | Energy: 28.6692 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
+
+2. wasmtime_aot:
+100K | Time: 3.8865 s | Energy: 16.3112 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+150K | Time: 5.8465 s | Energy: 24.5378 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+200K | Time: 7.7762 s | Energy: 31.9047 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
+
+3. wasmer_cranerlift:
+100K | Time: 3.9397 s | Energy: 14.1125 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+150K | Time: 5.9123 s | Energy: 22.9951 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+200K | Time: 7.8621 s | Energy: 28.2562 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
+
+4. wasmer_V8:
+100K | Time: 4.5803 s | Energy: 17.5348 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+150K | Time: 6.8665 s | Energy: 28.1763 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+200K | Time: 9.1147 s | Energy: 38.4028 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
+
+5. wasmer_LLVM:
+100K | Time: 3.6071 s | Energy: 13.1713 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+150K | Time: 5.4265 s | Energy: 19.1768 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
+200K | Time: 7.2056 s | Energy: 26.9887 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
