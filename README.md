@@ -2,8 +2,7 @@
 
 **OVERVIEW**
 
-This project benchmarks a WASI-compatible Rust ML workload (logistic
-regression) across multiple WebAssembly runtimes and measures:
+This project benchmarks a WASI-compatible Rust ML multiple workloads across multiple WebAssembly runtimes and measures:
 
 -   End-to-end execution time (wall-clock)
 -   Energy (Total, Baseline, Dynamic = Total − Baseline)
