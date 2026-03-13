@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 from __future__ import annotations
 
 import argparse
@@ -37,7 +36,9 @@ RUNTIME_CHOICES = [
     "wasmer_cranelift",
     "wasmer_llvm",
     "wasmer_v8",
+    "wasmer_singlepass",
     "wasmedge",
+    "wasmedge_aot",
     "wazero",
     "wamr_interp",
     "wamr_fast_interp",
@@ -49,7 +50,6 @@ RUNTIME_CHOICES = [
 ]
 
 
-# ---------------- Utility helpers ----------------
 def which_or_none(path_or_name: str) -> str | None:
     p = Path(path_or_name)
     if p.is_absolute() or "/" in path_or_name:
@@ -81,7 +81,6 @@ def json_dump(path: Path, obj: dict):
     path.write_text(json.dumps(obj, indent=2) + "\n")
 
 
-# ---------------- Wattmeter helpers ----------------
 def start_meter(csv_path: Path):
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     fh = open(csv_path, "w", buffering=1)
@@ -187,9 +186,10 @@ def wait_for_first_valid_sample(csv_path: Path, timeout_s: float = WAIT_FIRST_SA
     return False
 
 
-# ---------------- Runtime helpers ----------------
 def run_cmd(cmd: list[str], cwd: str | None = None):
-    p = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    p = subprocess.Popen(
+        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
     out, err = p.communicate()
     return p.returncode, (out or "") + "\n" + (err or "")
 
@@ -251,12 +251,30 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
         wasmer = resolve_runtime_binary([home / ".wasmer/bin/wasmer", "wasmer"], "wasmer")
         return [wasmer, "run", "--v8", str(wasm), "--mapdir", f"/work:{root}", "--"] + wasm_args
 
-    if runtime == "wasmedge":
+    if runtime == "wasmer_singlepass":
+        wasmer = resolve_runtime_binary([home / ".wasmer/bin/wasmer", "wasmer"], "wasmer")
+        return [wasmer, "run", "--singlepass", str(wasm), "--mapdir", f"/work:{root}", "--"] + wasm_args
+
+    if runtime in ("wasmedge", "wasmedge_aot"):
         wasmedge = resolve_runtime_binary([home / ".wasmedge/bin/wasmedge", "wasmedge"], "wasmedge")
+        so_candidates = [
+            root / "ml_wasi_kmeans.so",
+            root / "target/wasm32-wasip1/release/ml_wasi_kmeans.so",
+            root / "mlRust-wasi/target/wasm32-wasip1/release/ml_wasi_kmeans.so",
+        ]
+        so_file = first_existing([p.resolve() for p in so_candidates])
+
+        if runtime == "wasmedge_aot":
+            if so_file is None:
+                raise SystemExit("wasmedge_aot selected but compiled WasmEdge AOT file (.so) was not found.")
+            return [wasmedge, "--dir", f"/work:{root}", str(so_file), "--"] + wasm_args
+
+        if so_file is not None:
+            return [wasmedge, "--dir", f"/work:{root}", str(so_file), "--"] + wasm_args
         return [wasmedge, "--dir", f"/work:{root}", str(wasm), "--"] + wasm_args
 
     if runtime == "wazero":
-        wazero = resolve_runtime_binary([root / "wazero/bin/wazero", "wazero"], "wazero")
+        wazero = resolve_runtime_binary([root / "wazero/bin/wazero", root.parent / "wazero/bin/wazero", "wazero"], "wazero")
         return [wazero, "run", "--mount", f"{root}:/work", str(wasm), "--"] + wasm_args
 
     if runtime == "wasmi":
@@ -271,6 +289,10 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
             [
                 root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
                 root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
+                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
+                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
+                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm",
+                root.parent / "WAMR/wasm-micro-runtime/build-product-mini/iwasm",
                 "iwasm",
             ],
             "iwasm",
@@ -291,13 +313,13 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
             return [iwasm, f"--map-dir=/data::{str((root / 'data').resolve())}", str(aot)] + wasm_args
 
         if runtime == "wamr_fast_interp":
-            return [iwasm, "--fast-jit", "--map-dir=/data::" + str((root / "data").resolve()), str(wasm)] + wasm_args
+            return [iwasm, "--fast-jit", f"--map-dir=/data::{str((root / 'data').resolve())}", str(wasm)] + wasm_args
 
         return [iwasm, f"--map-dir=/data::{str((root / 'data').resolve())}", str(wasm)] + wasm_args
 
     if runtime == "wasm3":
-        wasm3 = resolve_runtime_binary(["wasm3", "m3"], "wasm3")
-        return [wasm3, "--dir", f"/work::{root}", str(wasm), "--"] + wasm_args
+        wasm3 = resolve_runtime_binary([root.parent / "wasm3/build/wasm3", root.parent / "wasm3/build/m3", "wasm3", "m3"], "wasm3")
+        return [wasm3, str(wasm)] + wasm_args
 
     if runtime == "native":
         native_candidates = [
@@ -319,34 +341,11 @@ def safe_mean(x, default=0.0):
     return float(stats.mean(x)) if x else float(default)
 
 
-# ---------------- Outer precision control (95% CI) ----------------
 def t_critical_95(n: int) -> float:
     table = {
-        1: 12.706,
-        2: 4.303,
-        3: 3.182,
-        4: 2.776,
-        5: 2.571,
-        6: 2.447,
-        7: 2.365,
-        8: 2.306,
-        9: 2.262,
-        10: 2.228,
-        11: 2.201,
-        12: 2.179,
-        13: 2.160,
-        14: 2.145,
-        15: 2.131,
-        16: 2.120,
-        17: 2.110,
-        18: 2.101,
-        19: 2.093,
-        20: 2.086,
-        25: 2.060,
-        30: 2.042,
-        40: 2.021,
-        60: 2.000,
-        120: 1.980,
+        1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+        11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093,
+        20: 2.086, 25: 2.060, 30: 2.042, 40: 2.021, 60: 2.000, 120: 1.980,
     }
     df = max(1, n - 1)
     for k in sorted(table):
@@ -380,9 +379,7 @@ def resolve_input_artifacts(root: Path, args) -> tuple[Path, Path]:
     ]
     wasm = first_existing([p.resolve() for p in wasm_candidates if p is not None])
     if wasm is None and args.runtime != "native":
-        raise SystemExit(
-            "K-Means WASM not found. Checked: " + ", ".join(str(p) for p in wasm_candidates)
-        )
+        raise SystemExit("K-Means WASM not found. Checked: " + ", ".join(str(p) for p in wasm_candidates))
 
     cwasm_candidates = []
     if args.cwasm:
@@ -395,7 +392,6 @@ def resolve_input_artifacts(root: Path, args) -> tuple[Path, Path]:
     ]
     cwasm = first_existing([p.resolve() for p in cwasm_candidates if p is not None])
     if cwasm is None:
-        # keep a stable path for metadata even if file is absent
         cwasm = (root / (args.cwasm or "ml_wasi_kmeans.cwasm")).resolve()
 
     return wasm if wasm is not None else Path(""), cwasm
@@ -405,15 +401,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--runtime", required=True, choices=RUNTIME_CHOICES)
     ap.add_argument("--dataset", required=True)
-
-    # K-Means workload args
     ap.add_argument("--k", type=int, default=3)
     ap.add_argument("--max-iters", type=int, default=20)
     ap.add_argument("--trials", type=int, default=50)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--normalize", type=int, choices=[0, 1], default=1)
-
-    # Keeping all controls intact
     ap.add_argument("--repeat-min", type=int, default=20)
     ap.add_argument("--repeat-max", type=int, default=60)
     ap.add_argument("--rel-precision", type=float, default=0.025)
@@ -421,11 +413,8 @@ def main():
     ap.add_argument("--cooldown-s", type=float, default=10.0)
     ap.add_argument("--warmup", type=int, default=1)
     ap.add_argument("--outdir", type=str, default="energy_metrics_unified")
-
-    # Keep these for compatibility with your old command habits; ignored by K-Means app.
     ap.add_argument("--epochs", type=int, default=10)
     ap.add_argument("--lr", type=float, default=0.001)
-
     ap.add_argument("--wasm", type=str, default="ml_wasi_kmeans.wasm")
     ap.add_argument("--cwasm", type=str, default="ml_wasi_kmeans.cwasm")
     args = ap.parse_args()
@@ -442,11 +431,7 @@ def main():
     try:
         rel_from_root = host_dataset.relative_to(root)
     except ValueError:
-        raise SystemExit(
-            f"Dataset must be inside the project root so a stable guest path can be constructed.\n"
-            f"root={root}\n"
-            f"dataset={host_dataset}"
-        )
+        raise SystemExit(f"Dataset must be inside the project root so a stable guest path can be constructed.\nroot={root}\ndataset={host_dataset}")
 
     guest_work = f"/work/{rel_from_root.as_posix()}"
     guest_data = f"/data/{host_dataset.name}"
@@ -455,34 +440,23 @@ def main():
         dataset_guest = str(host_dataset)
     elif args.runtime in ("wamr_interp", "wamr_fast_interp", "wamr_iwasm", "wamr_aot"):
         dataset_guest = guest_data
-    elif args.runtime == "wasmi":
+    elif args.runtime in ("wasmi", "wasm3"):
         dataset_guest = rel_from_root.as_posix()
     else:
         dataset_guest = guest_work
 
     k_trials = int(args.trials)
     common_args = [
-        # pass both forms so either parser style works
-        "--dataset",
-        dataset_guest,
-        "--datasets",
-        dataset_guest,
-        "--k",
-        str(args.k),
-        "--max-iters",
-        str(args.max_iters),
-        "--trials",
-        str(k_trials),
-        "--min-runs",
-        str(k_trials),
-        "--max-runs",
-        str(k_trials),
-        "--rel-precision",
-        "0.0",
-        "--seed",
-        str(args.seed),
-        "--normalize",
-        str(args.normalize),
+        "--dataset", dataset_guest,
+        "--datasets", dataset_guest,
+        "--k", str(args.k),
+        "--max-iters", str(args.max_iters),
+        "--trials", str(k_trials),
+        "--min-runs", str(k_trials),
+        "--max-runs", str(k_trials),
+        "--rel-precision", "0.0",
+        "--seed", str(args.seed),
+        "--normalize", str(args.normalize),
     ]
 
     cmd = build_runtime_cmd(args.runtime, root, wasm, cwasm, common_args)
@@ -520,7 +494,6 @@ def main():
     }
     json_dump(outdir / "metadata.json", metadata)
 
-    # Warmup
     for i in range(args.warmup):
         rc, out = run_cmd(cmd, cwd=str(root))
         if rc != 0:
@@ -627,10 +600,7 @@ def main():
 
         if good_runs >= min_runs:
             rel_hw = rel_ci_halfwidth_95(dyn_list)
-            print(
-                f"[{args.runtime}] precision check: n={good_runs} relCI_halfwidth={rel_hw:.4f} target={target:.4f}",
-                flush=True,
-            )
+            print(f"[{args.runtime}] precision check: n={good_runs} relCI_halfwidth={rel_hw:.4f} target={target:.4f}", flush=True)
             if rel_hw <= target:
                 print(f"[{args.runtime}] stopping early: precision achieved at n={good_runs}", flush=True)
                 break
