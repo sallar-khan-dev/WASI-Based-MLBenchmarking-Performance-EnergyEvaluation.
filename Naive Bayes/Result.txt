@@ -1,0 +1,56 @@
+1. wasmtime_jit
+100K | Time: 6.7141 s | Energy: 28.1545 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 12.4641 s | Energy: 52.8938 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 19.1362 s | Energy: 84.8751 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+2. wasmtime_aot
+100K | Time: 6.6505 s | Energy: 27.5808 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 12.4047 s | Energy: 46.9079 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 19.1180 s | Energy: 79.5945 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+3. wasmtime_winch
+100K | Time: 14.2415 s | Energy: 52.9711 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 25.3455 s | Energy: 81.8527 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 37.9756 s | Energy: 146.2736 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+4. wasmer_cranelift
+100K | Time: 7.0641 s | Energy: 28.7367 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 12.9848 s | Energy: 49.2034 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 19.5373 s | Energy: 77.2433 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+5. wasmer_V8
+100K | Time: 7.6694 s | Energy: 27.9718 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 14.4658 s | Energy: 52.4941 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 22.0940 s | Energy: 82.5046 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+6. wasmer_LLVM
+100K | Time: 6.4798 s | Energy: 24.7384 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 11.8196 s | Energy: 48.7849 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 17.9805 s | Energy: 71.2744 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+7. wasmedge_aot
+100K | Time: 6.3831 s | Energy: 21.4467 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 11.9323 s | Energy: 44.9678 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 18.1443 s | Energy: 72.6179 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+8. wamr_interp
+100K | Time: 69.1113 s | Energy: 207.6076 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 109.0611 s | Energy: 317.1861 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 161.1366 s | Energy: 468.1118 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+9. wamr_fast_interp
+100K | Time: 11.6234 s | Energy: 37.6869 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 21.0335 s | Energy: 75.0285 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 31.4107 s | Energy: 110.5607 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+10. WAMR_aot
+100K | Time: 6.4377 s | Energy: 21.4666 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 11.9012 s | Energy: 43.6406 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 18.1192 s | Energy: 72.8826 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+11. wasm3
+100K | Time: 47.1857 s | Energy: 149.2502 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 78.6470 s | Energy: 256.6368 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 119.5994 s | Energy: 356.8826 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+12. wasmi
+100K | Time: 87.0788 s | Energy: 275.6155 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 137.5710 s | Energy: 429.7168 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 199.1563 s | Energy: 616.9948 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+13. Wazero
+100K | Time: 13.8159 s | Energy: 45.2034 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 24.3559 s | Energy: 81.1279 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 36.9621 s | Energy: 126.4512 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+14. Native
+100K | Time: 5.9767 s | Energy: 21.2047 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
+150K | Time: 11.3361 s | Energy: 45.1201 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
+200K | Time: 17.3171 s | Energy: 74.5768 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
