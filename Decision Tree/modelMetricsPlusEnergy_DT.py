@@ -231,7 +231,7 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
 
     if runtime == "wasmtime_winch":
         wasmtime = resolve_runtime_binary([home / ".wasmtime/bin/wasmtime", "wasmtime"], "wasmtime")
-        return [wasmtime, "run", "-W", "winch", "--dir", f"{root}::/work", str(wasm), "--"] + wasm_args
+        return [wasmtime, "run", "-C", "compiler=winch", "--dir", f"{root}::/work", str(wasm), "--"] + wasm_args
 
     if runtime == "wasmer_cranelift":
         wasmer = resolve_runtime_binary([home / ".wasmer/bin/wasmer", "wasmer"], "wasmer")
@@ -252,8 +252,11 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
     if runtime in ("wasmedge", "wasmedge_aot"):
         wasmedge = resolve_runtime_binary([home / ".wasmedge/bin/wasmedge", "wasmedge"], "wasmedge")
         so_candidates = [
+            root / "ml_wasi_dt_wasmedge_aot.so",
             root / "ml_wasi_dt.so",
+            root / "target/wasm32-wasip1/release/ml_wasi_dt_wasmedge_aot.so",
             root / "target/wasm32-wasip1/release/ml_wasi_dt.so",
+            root / "mlRust-wasi/target/wasm32-wasip1/release/ml_wasi_dt_wasmedge_aot.so",
             root / "mlRust-wasi/target/wasm32-wasip1/release/ml_wasi_dt.so",
         ]
         so_file = first_existing([p.resolve() for p in so_candidates])
@@ -282,18 +285,32 @@ def build_runtime_cmd(runtime: str, root: Path, wasm: Path, cwasm: Path | None, 
         return [wasmi, "--dir", ".", str(wasm), "--"] + wasm_args
 
     if runtime in ("wamr_interp", "wamr_fast_interp", "wamr_iwasm", "wamr_aot"):
-        iwasm = resolve_runtime_binary(
-            [
-                root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
-                root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
-                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
-                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
-                root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm",
-                root.parent / "WAMR/wasm-micro-runtime/build-product-mini/iwasm",
+        if runtime == "wamr_fast_interp":
+            iwasm = resolve_runtime_binary(
+                [
+                    root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm",
+                    root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm-2.4.3",
+                    root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm",
+                    root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build_fastjit/iwasm-2.4.3",
+                    "iwasm",
+                ],
+                "iwasm_fastjit",
+            )
+        else:
+            iwasm = resolve_runtime_binary(
+                [
+                    root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
+                    root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm-2.4.3",
+                    root / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
+                    root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm",
+                    root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm-2.4.3",
+                    root.parent / "WAMR/wasm-micro-runtime/product-mini/platforms/linux/build/bin/iwasm",
+                    root.parent / "WAMR/wasm-micro-runtime/build-product-mini/iwasm",
+                    root.parent / "WAMR/wasm-micro-runtime/build-product-mini/iwasm-2.4.3",
+                    "iwasm",
+                ],
                 "iwasm",
-            ],
-            "iwasm",
-        )
+            )
 
         if runtime == "wamr_aot":
             aot_candidates = [
