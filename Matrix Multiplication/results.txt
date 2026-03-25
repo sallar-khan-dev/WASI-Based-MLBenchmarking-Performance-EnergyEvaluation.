@@ -345,35 +345,37 @@ Matrix Multiplication
 7. wasmedge_aot:
 
 100K:
- "execution_time_s": 92.92378104925156,
-  "dynamic_energy_j": 321.55281567738837,
-  "dynamic_energy_pre_j": 329.95158570651785,
-  "dynamic_energy_post_j": 313.15404564825894,
-  "idle_pre_w_mean": 196.84769063944705,
-  "idle_post_w_mean": 197.02859532513475,
-  "idle_avg_w_mean": 196.9381429822909,
+ "execution_time_s": 2.693250330289205,
+  "dynamic_energy_j": 6.4726060920440345,
+  "dynamic_energy_pre_j": 6.585940757506912,
+  "dynamic_energy_post_j": 6.359271426581158,
+  "idle_pre_w_mean": 195.48117165004413,
+  "idle_post_w_mean": 195.5652709276339,
+  "idle_avg_w_mean": 195.523221288839,
   "result_mean": 0.04481584417764002,
   "result_std": 3.469446951953614e-17,
-  "outer_runs": 20,
-  "rel_ci_halfwidth_95_dyn_energy": 0.021404749092207367,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.04567367820135658,
   "rel_precision_target": 0.025,
   "trials_k": 50,
   "idle_window_s": 10.0,
   "cooldown_s": 10.0
+}
+
 
 
 150K:
-  "execution_time_s": 172.78363025188446,
-  "dynamic_energy_j": 608.4293691085459,
-  "dynamic_energy_pre_j": 619.6752053926787,
-  "dynamic_energy_post_j": 597.1835328244131,
-  "idle_pre_w_mean": 197.2877236236236,
-  "idle_post_w_mean": 197.4180016066066,
-  "idle_avg_w_mean": 197.3528626151151,
+"execution_time_s": 5.020532790819804,
+  "dynamic_energy_j": 13.543906917960053,
+  "dynamic_energy_pre_j": 13.660889976653865,
+  "dynamic_energy_post_j": 13.426923859266243,
+  "idle_pre_w_mean": 195.28385694672295,
+  "idle_post_w_mean": 195.33051358087548,
+  "idle_avg_w_mean": 195.3071852637992,
   "result_mean": -0.03498976084191873,
   "result_std": 0.0,
-  "outer_runs": 20,
-  "rel_ci_halfwidth_95_dyn_energy": 0.022474063182208168,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.02657004169415552,
   "rel_precision_target": 0.025,
   "trials_k": 50,
   "idle_window_s": 10.0,
@@ -382,21 +384,22 @@ Matrix Multiplication
 
 200K:
 {
-  "execution_time_s": 263.38069068193437,
-  "dynamic_energy_j": 902.9907171125348,
-  "dynamic_energy_pre_j": 911.7475544292898,
-  "dynamic_energy_post_j": 894.2338797957797,
-  "idle_pre_w_mean": 197.72975297217602,
-  "idle_post_w_mean": 197.79604789381,
-  "idle_avg_w_mean": 197.762900432993,
+ "execution_time_s": 7.650335323810578,
+  "dynamic_energy_j": 18.983812104004723,
+  "dynamic_energy_pre_j": 19.34670043362756,
+  "dynamic_energy_post_j": 18.62092377438189,
+  "idle_pre_w_mean": 195.20001401981807,
+  "idle_post_w_mean": 195.2949185458003,
+  "idle_avg_w_mean": 195.2474662828092,
   "result_mean": 0.02467590106760107,
   "result_std": 6.938893903907228e-18,
-  "outer_runs": 20,
-  "rel_ci_halfwidth_95_dyn_energy": 0.024079525753207154,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.02593721556311087,
   "rel_precision_target": 0.025,
   "trials_k": 50,
   "idle_window_s": 10.0,
   "cooldown_s": 10.0
+
 
 
 
@@ -478,10 +481,40 @@ Matrix Multiplication
 
 
 150K:
+  "execution_time_s": 6.966973729928335,
+  "dynamic_energy_j": 22.157859206188373,
+  "dynamic_energy_pre_j": 22.509084733869972,
+  "dynamic_energy_post_j": 21.806633678506778,
+  "idle_pre_w_mean": 196.14365620556453,
+  "idle_post_w_mean": 196.2443189575706,
+  "idle_avg_w_mean": 196.19398758156757,
+  "result_mean": -0.03498976084191873,
+  "result_std": 0.0,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.028054374603802158,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
 
 
 200K:
 
+"execution_time_s": 10.689271505673727,
+  "dynamic_energy_j": 30.74007060499197,
+  "dynamic_energy_pre_j": 30.92209423687895,
+  "dynamic_energy_post_j": 30.558046973104986,
+  "idle_pre_w_mean": 196.15694681823786,
+  "idle_post_w_mean": 196.19043038592963,
+  "idle_avg_w_mean": 196.17368860208376,
+  "result_mean": 0.02467590106760107,
+  "result_std": 6.938893903907228e-18,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.030987498894448736,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
 
 
 ======================================================================================================
@@ -513,7 +546,7 @@ Matrix Multiplication
   "idle_pre_w_mean": 198.11914776707903,
   "idle_post_w_mean": 198.20888867228467,
   "idle_avg_w_mean": 198.16401821968185,
-  "result_mean": -0.03498976084191873,
+  "result_mean": 0.03498976084191873,
   "result_std": 0.0,
   "outer_runs": 31,
   "rel_ci_halfwidth_95_dyn_energy": 0.024375758291675223,
@@ -525,6 +558,21 @@ Matrix Multiplication
 
 
 200K:
+ "execution_time_s": 30.6486,
+  "dynamic_energy_j": 80.74007060499197,
+  "dynamic_energy_pre_j": 30.92209423687895,
+  "dynamic_energy_post_j": 30.558046973104986,
+  "idle_pre_w_mean": 196.15694681823786,
+  "idle_post_w_mean": 196.19043038592963,
+  "idle_avg_w_mean": 196.17368860208376,
+  "result_mean": 0.685231
+  "result_std": 6.938893903907228e-18,
+  "outer_runs": 60,
+  "rel_ci_halfwidth_95_dyn_energy": 0.030987498894448736,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
 
 
 
@@ -533,12 +581,58 @@ Matrix Multiplication
 11. wasm3
 
 100K:
+   "execution_time_s": 7.833788078658435,
+  "dynamic_energy_j": 23.514926156586352,
+  "dynamic_energy_pre_j": 23.88958396671828,
+  "dynamic_energy_post_j": 23.140268346454423,
+  "idle_pre_w_mean": 195.7575161273693,
+  "idle_post_w_mean": 195.85302827644472,
+  "idle_avg_w_mean": 195.80527220190703,
+  "result_mean": 0.04481584417764002,
+  "result_std": 3.469446951953614e-17,
+  "outer_runs": 49,
+  "rel_ci_halfwidth_95_dyn_energy": 0.024998481790395374,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
+}
 
 
 150K:
+"execution_time_s": 14.576737337642246,
+  "dynamic_energy_j": 45.02131871051663,
+  "dynamic_energy_pre_j": 45.59954065302369,
+  "dynamic_energy_post_j": 44.44309676800958,
+  "idle_pre_w_mean": 195.84679244921745,
+  "idle_post_w_mean": 195.92613195970696,
+  "idle_avg_w_mean": 195.8864622044622,
+  "result_mean": -0.03498976084191873,
+  "result_std": 0.0,
+  "outer_runs": 36,
+  "rel_ci_halfwidth_95_dyn_energy": 0.024493346540458795,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
 
 
 200K:
+ "execution_time_s": 22.517123848199844,
+  "dynamic_energy_j": 67.04932320931451,
+  "dynamic_energy_pre_j": 67.60816375199795,
+  "dynamic_energy_post_j": 66.49048266663107,
+  "idle_pre_w_mean": 195.67090957183143,
+  "idle_post_w_mean": 195.72041638217263,
+  "idle_avg_w_mean": 195.69566297700203,
+  "result_mean": 0.02467590106760107,
+  "result_std": 6.938893903907228e-18,
+  "outer_runs": 32,
+  "rel_ci_halfwidth_95_dyn_energy": 0.02447029348628791,
+  "rel_precision_target": 0.025,
+  "trials_k": 50,
+  "idle_window_s": 10.0,
+  "cooldown_s": 10.0
 
 
 ======================================================================================================
@@ -600,6 +694,12 @@ Matrix Multiplication
 
 
 
+
+
+
+
+
+
 ======================================================================================================
 13.Wazero :
 
@@ -656,6 +756,12 @@ Matrix Multiplication
   "idle_window_s": 10.0,
   "cooldown_s": 10.0
 }
+
+
+
+
+
+
 
 =================================================================
 14. NATIVE
