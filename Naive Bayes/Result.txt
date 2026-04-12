@@ -1,56 +1,372 @@
-1. wasmtime_jit
-100K | Time: 6.7141 s | Energy: 28.1545 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 12.4641 s | Energy: 52.8938 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 19.1362 s | Energy: 84.8751 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-2. wasmtime_aot
-100K | Time: 6.6505 s | Energy: 27.5808 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 12.4047 s | Energy: 46.9079 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 19.1180 s | Energy: 79.5945 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+NAIVE BAYES!
+
+1. wasmtime_jit:
+
+100K:
+Execution Time (s): 6.714096
+Dynamic Energy (J): 28.154536
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 12.464143
+Dynamic Energy (J): 52.893813
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 19.136152
+Dynamic Energy (J): 84.875087
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+2. wasmtime_aot:
+
+100K:
+Execution Time (s): 6.650516
+Dynamic Energy (J): 27.580759
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 12.404726
+Dynamic Energy (J): 46.907935
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+"execution_time_s": 19.11804986822194,
+  "dynamic_energy_j": 79.59449298711286,
+"accuracy": 0.9385565000000001,
+  "precision": 0.9370900978604568,
+  "recall": 0.9308192796366326,
+  "f1_score": 0.9337741418265516,
+
+
+======================================================================================================
 3. wasmtime_winch
-100K | Time: 14.2415 s | Energy: 52.9711 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 25.3455 s | Energy: 81.8527 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 37.9756 s | Energy: 146.2736 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-4. wasmer_cranelift
-100K | Time: 7.0641 s | Energy: 28.7367 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 12.9848 s | Energy: 49.2034 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 19.5373 s | Energy: 77.2433 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-5. wasmer_V8
-100K | Time: 7.6694 s | Energy: 27.9718 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 14.4658 s | Energy: 52.4941 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 22.0940 s | Energy: 82.5046 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-6. wasmer_LLVM
-100K | Time: 6.4798 s | Energy: 24.7384 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 11.8196 s | Energy: 48.7849 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 17.9805 s | Energy: 71.2744 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-7. wasmedge_aot
-100K | Time: 6.3831 s | Energy: 21.4467 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 11.9323 s | Energy: 44.9678 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 18.1443 s | Energy: 72.6179 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+100K:
+"execution_time_s": 14.241526861985525,
+  "dynamic_energy_j": 52.9711383733695,
+"accuracy": 0.9391570000000001,
+  "precision": 0.938002777153353,
+  "recall": 0.9311681932511421,
+  "f1_score": 0.9343717940491315,
+
+150K:
+ "execution_time_s": 25.34545500675837,
+  "dynamic_energy_j": 81.85273086913391,
+"accuracy": 0.9380546666666664,
+  "precision": 0.9368648297468829,
+  "recall": 0.9302925474692282,
+  "f1_score": 0.9333733617390643,
+
+200K:
+Execution Time (s): 37.975603
+Dynamic Energy (J): 146.273557
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+4. wasmer_cranerlift:
+100K:
+Execution Time (s): 7.064119
+Dynamic Energy (J): 28.736706
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 12.984768
+Dynamic Energy (J): 49.203407
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 19.537281
+Dynamic Energy (J): 77.243273
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+5.wasmer_V8:
+100K:
+Execution Time (s): 7.669422
+Dynamic Energy (J): 27.971828
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 14.465795
+Dynamic Energy (J): 52.494136
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 22.094007
+Dynamic Energy (J): 82.504594
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+6.  wasmer_LLVM:
+100K:
+Execution Time (s): 6.499234
+Dynamic Energy (J): 23.909488
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 11.882707
+Dynamic Energy (J): 47.918346
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+
+200K:
+Execution Time (s): 17.937130
+Dynamic Energy (J): 77.529528
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+7. wasmedge_aot:
+100K:
+Execution Time (s): 6.345421
+Dynamic Energy (J): 21.895713
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 11.870757
+Dynamic Energy (J): 43.284284
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+
+200K:
+Execution Time (s): 18.198323
+Dynamic Energy (J): 71.067182
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
 8. wamr_interp
-100K | Time: 69.1113 s | Energy: 207.6076 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 109.0611 s | Energy: 317.1861 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 161.1366 s | Energy: 468.1118 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+100K:
+Execution Time (s): 69.111301
+Dynamic Energy (J): 207.607630
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+150K:
+Execution Time (s): 109.061143
+Dynamic Energy (J): 317.186057
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+"execution_time_s": 161.13657772541046,
+  "dynamic_energy_j": 468.1118321993169,
+"accuracy": 0.9385565000000001,
+  "precision": 0.9370900978604568,
+  "recall": 0.9308192796366326,
+  "f1_score": 0.9337741418265516,
+
+======================================================================================================
 9. wamr_fast_interp
-100K | Time: 11.6234 s | Energy: 37.6869 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 21.0335 s | Energy: 75.0285 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 31.4107 s | Energy: 110.5607 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-10. WAMR_aot
-100K | Time: 6.4377 s | Energy: 21.4666 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 11.9012 s | Energy: 43.6406 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 18.1192 s | Energy: 72.8826 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+100K:
+Execution Time (s): 11.623419
+Dynamic Energy (J): 37.686850
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 21.033545
+Dynamic Energy (J): 75.028493
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 31.410697
+Dynamic Energy (J): 110.560692
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+10. WAMR_aot:
+100K:
+Execution Time (s): 6.412473
+Dynamic Energy (J): 22.912885
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+
+150K:
+Execution Time (s): 11.851118
+Dynamic Energy (J): 45.353446
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 18.157369
+Dynamic Energy (J): 73.286866
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
 11. wasm3
-100K | Time: 47.1857 s | Energy: 149.2502 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 78.6470 s | Energy: 256.6368 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 119.5994 s | Energy: 356.8826 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+100K:
+Execution Time (s): 47.185677
+Dynamic Energy (J): 149.250232
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 78.646967
+Dynamic Energy (J): 256.636806
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 119.599381
+Dynamic Energy (J): 356.882623
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+
 12. wasmi
-100K | Time: 87.0788 s | Energy: 275.6155 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 137.5710 s | Energy: 429.7168 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 199.1563 s | Energy: 616.9948 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-13. Wazero
-100K | Time: 13.8159 s | Energy: 45.2034 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 24.3559 s | Energy: 81.1279 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 36.9621 s | Energy: 126.4512 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
-14. Native
-100K | Time: 5.9767 s | Energy: 21.2047 J | Acc: 0.9392 | Prec: 0.9380 | Rec: 0.9312 | F1: 0.9344
-150K | Time: 11.3361 s | Energy: 45.1201 J | Acc: 0.9381 | Prec: 0.9369 | Rec: 0.9303 | F1: 0.9334
-200K | Time: 17.3171 s | Energy: 74.5768 J | Acc: 0.9386 | Prec: 0.9371 | Rec: 0.9308 | F1: 0.9338
+100K:
+Execution Time (s): 87.078820
+Dynamic Energy (J): 275.615514
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 137.571013
+Dynamic Energy (J): 429.716835
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 199.156268
+Dynamic Energy (J): 616.994751
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+======================================================================================================
+13.Wazero :
+100K:
+Execution Time (s): 13.815893
+Dynamic Energy (J): 45.203383
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 24.355904
+Dynamic Energy (J): 81.127889
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+execution_time_s": 36.962108465758234,
+ "dynamic_energy_j": 126.45115064659073,
+ accuracy": 0.9385565000000001,
+  "precision": 0.9370900978604568,
+  "recall": 0.9308192796366326,
+  "f1_score": 0.9337741418265516,	
+======================================================================================================
+14. NATIVE
+100K:
+Execution Time (s): 5.976691
+Dynamic Energy (J): 21.204715
+Accuracy: 0.939157
+Precision: 0.938003
+Recall: 0.931168
+F1 Score: 0.934372
+
+150K:
+Execution Time (s): 11.336137
+Dynamic Energy (J): 45.120065
+Accuracy: 0.938055
+Precision: 0.936865
+Recall: 0.930293
+F1 Score: 0.933373
+
+200K:
+Execution Time (s): 17.317130
+Dynamic Energy (J): 74.576830
+Accuracy: 0.938557
+Precision: 0.937090
+Recall: 0.930819
+F1 Score: 0.933774
+
+
+
