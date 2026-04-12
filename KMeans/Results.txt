@@ -71,3 +71,8 @@ KMEAN CLUSTERING!
 100K | Time: 11.0577 s | Energy: 37.7955 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
 150K | Time: 16.6118 s | Energy: 56.4482 J | Acc: 0.9999 | Prec: 0.9999 | Rec: 0.9999 | F1: 0.9999
 200K | Time: 22.1182 s | Energy: 75.5500 J | Acc: 0.9998 | Prec: 0.9998 | Rec: 0.9998 | F1: 0.9998
+
+
+
+
+
