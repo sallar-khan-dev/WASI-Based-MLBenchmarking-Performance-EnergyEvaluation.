@@ -21,7 +21,8 @@ struct Args {
     min_samples_split: usize,
     min_samples_leaf: usize,
     threshold_bins: usize,
-    train_cap: usize,
+
+    train_cap: Option<usize>,
 }
 
 #[derive(Clone)]
@@ -33,9 +34,7 @@ struct Dataset {
 
 #[derive(Clone)]
 enum Node {
-    Leaf {
-        class_id: usize,
-    },
+    Leaf { class_id: usize },
     Split {
         feature: usize,
         threshold: f64,
@@ -58,6 +57,20 @@ fn get_flag_bool01(args: &[String], key: &str, default: bool) -> bool {
             v == "1" || v.eq_ignore_ascii_case("true") || v.eq_ignore_ascii_case("yes")
         }
         None => default,
+    }
+}
+
+fn parse_optional_usize(raw: Option<String>) -> Option<usize> {
+    match raw {
+        None => None,
+        Some(v) => {
+            let s = v.trim();
+            if s.eq_ignore_ascii_case("none") || s.eq_ignore_ascii_case("full") {
+                None
+            } else {
+                s.parse::<usize>().ok()
+            }
+        }
     }
 }
 
@@ -100,9 +113,7 @@ fn parse_args() -> Args {
         .and_then(|v| v.parse::<usize>().ok())
         .unwrap_or(8);
 
-    let train_cap = get_arg_value(&args, "--train-cap")
-        .and_then(|v| v.parse::<usize>().ok())
-        .unwrap_or(4096);
+    let train_cap = parse_optional_usize(get_arg_value(&args, "--train-cap"));
 
     Args {
         dataset,
@@ -487,23 +498,9 @@ fn eval_metrics(y_true: &[usize], y_pred: &[usize], n_classes: usize) -> (f64, f
             }
         }
 
-        let p = if tp + fp == 0 {
-            0.0
-        } else {
-            (tp as f64) / ((tp + fp) as f64)
-        };
-
-        let r = if tp + fn_ == 0 {
-            0.0
-        } else {
-            (tp as f64) / ((tp + fn_) as f64)
-        };
-
-        let f1 = if (p + r) == 0.0 {
-            0.0
-        } else {
-            2.0 * p * r / (p + r)
-        };
+        let p = if tp + fp == 0 { 0.0 } else { (tp as f64) / ((tp + fp) as f64) };
+        let r = if tp + fn_ == 0 { 0.0 } else { (tp as f64) / ((tp + fn_) as f64) };
+        let f1 = if (p + r) == 0.0 { 0.0 } else { 2.0 * p * r / (p + r) };
 
         prec_sum += p;
         rec_sum += r;
@@ -529,14 +526,17 @@ fn mean_usize(v: &[usize]) -> f64 {
     (total as f64) / (v.len() as f64)
 }
 
-fn capped_training_subset(train_idx: &[usize], cap: usize, rng: &mut StdRng) -> Vec<usize> {
-    if train_idx.len() <= cap {
-        return train_idx.to_vec();
+fn select_training_subset(train_idx: &[usize], cap: Option<usize>, rng: &mut StdRng) -> Vec<usize> {
+    match cap {
+        None => train_idx.to_vec(),
+        Some(limit) if train_idx.len() <= limit => train_idx.to_vec(),
+        Some(limit) => {
+            let mut subset = train_idx.to_vec();
+            subset.shuffle(rng);
+            subset.truncate(limit);
+            subset
+        }
     }
-    let mut subset = train_idx.to_vec();
-    subset.shuffle(rng);
-    subset.truncate(cap);
-    subset
 }
 
 fn main() {
@@ -554,6 +554,8 @@ fn main() {
     let mut f1s = Vec::with_capacity(args.trials);
     let mut node_counts = Vec::with_capacity(args.trials);
     let mut depths = Vec::with_capacity(args.trials);
+    let mut effective_train_sizes = Vec::with_capacity(args.trials);
+    let mut nominal_train_sizes = Vec::with_capacity(args.trials);
 
     let mut base_rng = StdRng::seed_from_u64(args.seed);
     let (fixed_train, fixed_test) = train_test_split_indices(n, args.test_ratio, &mut base_rng);
@@ -573,7 +575,10 @@ fn main() {
             apply_normalization_inplace(&mut x_local, &mu, &sd);
         }
 
-        let tree_train_idx = capped_training_subset(&train_idx, args.train_cap, &mut rng);
+        let tree_train_idx = select_training_subset(&train_idx, args.train_cap, &mut rng);
+        nominal_train_sizes.push(train_idx.len());
+        effective_train_sizes.push(tree_train_idx.len());
+
         let tree = build_tree(&x_local, &data.y, &tree_train_idx, 0, &args, data.n_classes);
 
         let preds = predict_many(&tree, &x_local, &test_idx);
@@ -597,6 +602,9 @@ fn main() {
         "tree_nodes_mean": mean_usize(&node_counts),
         "tree_depth_mean": mean_usize(&depths),
         "train_cap": args.train_cap,
+        "full_training_used": args.train_cap.is_none(),
+        "nominal_train_size_mean": mean_usize(&nominal_train_sizes),
+        "effective_train_size_mean": mean_usize(&effective_train_sizes),
         "trials_k": args.trials
     });
 
